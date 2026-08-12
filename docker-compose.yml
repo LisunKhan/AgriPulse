@@ -41,6 +41,21 @@ services:
     networks:
       - agripulse
 
+  # Milestone 1: IoT sensor simulator → MQTT
+  simulator:
+    build: ./simulator
+    container_name: agripulse_simulator
+    environment:
+      MQTT_HOST: mqtt-broker
+      MQTT_PORT: 1883
+      PUBLISH_INTERVAL_SEC: 5
+    depends_on:
+      mqtt-broker:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - agripulse
+
 volumes:
   pgdata:
   mosquitto_data:
