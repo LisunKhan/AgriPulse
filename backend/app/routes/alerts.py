@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import Optional
+from uuid import UUID
 
 from fastapi import APIRouter, HTTPException, Query
 
@@ -19,9 +20,9 @@ async def list_alerts(
     return [AlertRecord(**row) for row in rows]
 
 
-@router.post("/{alert_id}/ack", response_model=AlertRecord)
-async def ack_alert(alert_id: int) -> AlertRecord:
-    row = await db.acknowledge_alert(alert_id)
+@router.post("/{public_id}/ack", response_model=AlertRecord)
+async def ack_alert(public_id: UUID) -> AlertRecord:
+    row = await db.acknowledge_alert(public_id)
     if row is None:
         raise HTTPException(status_code=404, detail="Alert not found")
     return AlertRecord(**row)

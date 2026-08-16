@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import Optional
+from uuid import UUID
 
 from pydantic import BaseModel, Field
 
@@ -18,11 +19,15 @@ class TelemetryReading(BaseModel):
 
 
 class TelemetryRecord(TelemetryReading):
-    id: int
+    """API-facing telemetry row. Internal BIGSERIAL id is not exposed."""
+
+    public_id: UUID
 
 
 class AlertRecord(BaseModel):
-    id: int
+    """API-facing alert row. Internal BIGSERIAL id is not exposed."""
+
+    public_id: UUID
     device_id: str
     alert_type: str
     message: str

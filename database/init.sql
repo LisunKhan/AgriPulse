@@ -1,8 +1,9 @@
--- AgriPulse telemetry schema (Milestone 2)
--- Applied automatically on first Postgres container start.
+-- AgriPulse telemetry schema
+-- Hybrid IDs: BIGSERIAL for internal PK, UUID public_id for API exposure.
 
 CREATE TABLE IF NOT EXISTS telemetry (
     id BIGSERIAL PRIMARY KEY,
+    public_id UUID NOT NULL DEFAULT gen_random_uuid() UNIQUE,
     device_id VARCHAR(50) NOT NULL,
     temperature_c DECIMAL(5, 2) NOT NULL,
     humidity_pct DECIMAL(5, 2) NOT NULL,
@@ -21,9 +22,9 @@ CREATE INDEX IF NOT EXISTS idx_telemetry_recorded_at
 CREATE INDEX IF NOT EXISTS idx_telemetry_device_recorded
     ON telemetry (device_id, recorded_at DESC);
 
--- Threshold / spoilage alerts (used by backend in Milestone 3)
 CREATE TABLE IF NOT EXISTS alerts (
     id BIGSERIAL PRIMARY KEY,
+    public_id UUID NOT NULL DEFAULT gen_random_uuid() UNIQUE,
     device_id VARCHAR(50) NOT NULL,
     alert_type VARCHAR(50) NOT NULL,
     message TEXT NOT NULL,
