@@ -1,0 +1,36 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --ink: #14261c;
+  --mist: #e7f0ea;
+  --field: #1f4d38;
+  --leaf: #3f7d5a;
+  --chill: #2f7f86;
+  --warn: #c9852c;
+  --risk: #b23a2f;
+  --line: rgba(20, 38, 28, 0.14);
+  --background: #e7f0ea;
+  --foreground: #14261c;
+}
+
+body {
+  color: var(--foreground);
+  background:
+    radial-gradient(1200px 600px at 10% -10%, rgba(47, 127, 134, 0.18), transparent 55%),
+    radial-gradient(900px 500px at 100% 0%, rgba(63, 125, 90, 0.2), transparent 50%),
+    linear-gradient(165deg, #edf5f0 0%, #dfece4 42%, #e8f1ec 100%);
+  min-height: 100vh;
+}
+
+* {
+  border-color: var(--line);
+}
+
+.grid-atmosphere {
+  background-image:
+    linear-gradient(rgba(20, 38, 28, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(20, 38, 28, 0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+}

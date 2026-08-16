@@ -24,7 +24,7 @@ class TelemetryHub:
             self._clients.discard(websocket)
 
     async def broadcast(self, event: str, payload: dict[str, Any]) -> None:
-        message = json.dumps({"event": event, "data": payload}, default=str)
+        message = json.dumps({"event": event, "data": payload})
         async with self._lock:
             clients = list(self._clients)
 

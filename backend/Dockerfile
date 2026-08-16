@@ -7,7 +7,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY app ./app
 
-ENV DATABASE_URL=postgresql://postgres:password123@postgres:5432/agripulse
 ENV MQTT_HOST=mqtt-broker
 ENV MQTT_PORT=1883
 

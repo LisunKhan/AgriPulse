@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+from decimal import Decimal
 from pathlib import Path
 from typing import Any, Optional
 from uuid import UUID
@@ -74,10 +75,18 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_alerts_public_id ON alerts (public_id);
 """
 
 
+def _json_safe(value: Any) -> Any:
+    if isinstance(value, UUID):
+        return str(value)
+    if isinstance(value, Decimal):
+        return float(value)
+    if isinstance(value, datetime):
+        return value.isoformat()
+    return value
+
+
 def _row_to_dict(row: asyncpg.Record) -> dict[str, Any]:
-    data = dict(row)
-    if "public_id" in data and data["public_id"] is not None:
-        data["public_id"] = str(data["public_id"])
+    data = {key: _json_safe(value) for key, value in dict(row).items()}
     data.pop("id", None)
     return data
 
