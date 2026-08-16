@@ -56,6 +56,35 @@ services:
     networks:
       - agripulse
 
+  # Milestone 3: FastAPI ingestion + REST/WebSocket API
+  backend:
+    build: ./backend
+    container_name: agripulse_api
+    ports:
+      - "8000:8000"
+    environment:
+      DATABASE_URL: postgresql://postgres:password123@postgres:5432/agripulse
+      MQTT_HOST: mqtt-broker
+      MQTT_PORT: 1883
+      MQTT_TOPIC: agripulse/telemetry/#
+      TEMP_MIN_C: 2.0
+      TEMP_MAX_C: 8.0
+      ALERT_COOLDOWN_SEC: 60
+    depends_on:
+      mqtt-broker:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "python -c \"import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')\""]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+    restart: unless-stopped
+    networks:
+      - agripulse
+
 volumes:
   pgdata:
   mosquitto_data:
